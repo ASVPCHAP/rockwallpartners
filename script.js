@@ -64,7 +64,7 @@
         : "I would like the free 20-minute process assessment.";
 
       var lines = [
-        "Hi Anthony,",
+        "Hello,",
         "",
         ask,
         "",

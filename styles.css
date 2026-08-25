@@ -537,6 +537,44 @@ button.btn {
   color: var(--paper);
 }
 
+.owner-grid {
+  display: grid;
+  gap: 1.6rem;
+  align-items: start;
+}
+
+.owner-portrait {
+  margin: 0;
+}
+
+.owner-portrait img {
+  width: 11.5rem;
+  height: 11.5rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--rule);
+  box-shadow: var(--shadow);
+  background: var(--ink);
+}
+
+.owner-copy p {
+  max-width: 38rem;
+  color: var(--muted);
+}
+
+.owner-copy p + p {
+  margin-top: 0.85rem;
+}
+
+.owner-links {
+  margin: 0 0 1.1rem !important;
+  font-weight: 550;
+}
+
+.owner-links a {
+  color: var(--accent);
+}
+
 .faq-list {
   display: grid;
   gap: 0;
@@ -579,7 +617,7 @@ button.btn {
   font-weight: 650;
 }
 
-/* Phone: hide until Anthony replaces YOUR_PHONE */
+/* Phone: hide until YOUR_PHONE is replaced */
 .phone-link[data-phone="YOUR_PHONE"],
 .booking-url-btn[data-booking-url=""],
 .booking-url-btn[hidden] {
@@ -724,6 +762,17 @@ button.btn {
     grid-template-columns: 1.2fr 0.9fr;
     align-items: start;
     gap: 2.4rem;
+  }
+
+  .owner-grid {
+    grid-template-columns: auto 1fr;
+    gap: 2.4rem;
+    align-items: start;
+  }
+
+  .owner-portrait img {
+    width: 13.5rem;
+    height: 13.5rem;
   }
 
   .steps {
