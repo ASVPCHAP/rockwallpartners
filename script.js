@@ -1,6 +1,15 @@
 (function () {
   "use strict";
 
+  // Old homepage #savings dump now lives on vendor-savings.html (/vendor-savings).
+  if (window.location.hash === "#savings") {
+    var path = window.location.pathname || "";
+    if (path.indexOf("vendor-savings") === -1) {
+      window.location.replace("vendor-savings.html");
+      return;
+    }
+  }
+
   var nav = document.getElementById("site-nav");
   var toggle = document.querySelector(".nav-toggle");
   if (toggle && nav) {

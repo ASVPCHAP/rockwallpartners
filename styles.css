@@ -184,6 +184,12 @@ a:hover {
   color: var(--ink-soft);
 }
 
+.site-nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 0.28em;
+  text-decoration-thickness: 1.5px;
+}
+
 .nav-toggle {
   appearance: none;
   width: 2.6rem;
@@ -276,6 +282,11 @@ section[id],
 #savings,
 #keep,
 #scorecard,
+#steps,
+#categories,
+#after,
+#faq,
+#proof,
 #top {
   scroll-margin-top: 4.75rem;
 }
@@ -402,10 +413,46 @@ button.btn {
 .steps,
 .leak-list,
 .bottleneck-list,
-.faq-list {
+.faq-list,
+.scorecard-list,
+.sheet-ranks,
+.sheet-qs,
+.keep-days,
+.after-list,
+.category-grid,
+.proof-strip {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.trade-grid li,
+.steps li,
+.leak-list li,
+.bottleneck-list li,
+.scorecard-list li,
+.sheet-ranks li,
+.sheet-qs li,
+.keep-days li,
+.after-list li,
+.category-grid li,
+.proof-strip li {
+  list-style: none;
+}
+
+.trade-grid li::marker,
+.steps li::marker,
+.leak-list li::marker,
+.bottleneck-list li::marker,
+.scorecard-list li::marker,
+.sheet-ranks li::marker,
+.sheet-qs li::marker,
+.keep-days li::marker,
+.after-list li::marker,
+.category-grid li::marker,
+.proof-strip li::marker {
+  content: none;
+  display: none;
 }
 
 .trade-grid {
@@ -919,8 +966,14 @@ button.btn {
 }
 
 .sheet-ranks li::before {
-  content: counter(item);
+  content: counter(item, decimal);
   counter-increment: item;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  color: var(--ink);
+  line-height: 1.1;
+  grid-column: 1;
+  grid-row: 1 / span 2;
 }
 
 .sheet-ranks {
@@ -964,6 +1017,7 @@ button.btn {
   .bottlenecks,
   .how,
   .savings,
+  .savings-teaser,
   .keep-page,
   .about,
   .faq,
@@ -1012,10 +1066,15 @@ button.btn {
   color: var(--muted);
 }
 
-.keep-matrix,
-.keep-days {
+.keep-matrix {
   margin: 0 0 0.5rem;
   padding-left: 1.15rem;
+}
+
+.keep-days {
+  margin: 0 0 0.5rem;
+  padding-left: 0;
+  list-style: none;
 }
 
 .keep-matrix li,
@@ -1118,9 +1177,10 @@ button.btn {
 }
 
 .after-list {
-  margin: 0 0 0.5rem;
-  padding-left: 1.2rem;
+  margin: 0;
+  padding: 0;
   max-width: 42rem;
+  list-style: none;
 }
 
 .after-list li {
@@ -1133,8 +1193,9 @@ button.btn {
 }
 
 .footnotes {
-  margin: 1.6rem 0 1rem;
-  padding-left: 1.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   color: var(--muted);
   font-size: 0.92rem;
   max-width: 46rem;
@@ -1176,5 +1237,127 @@ button.btn {
   }
   .savings-steps {
     grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+/* Accordion — details/summary as tap buttons (vendor-savings.html) */
+
+.accordion-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.accordion-item {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: none;
+}
+
+.accordion-item-block {
+  margin-top: 0.75rem;
+}
+
+.fine-print-block {
+  margin-top: 1.4rem;
+}
+
+.accordion-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 3rem;
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.25;
+  border-radius: var(--radius);
+}
+
+.accordion-item summary::-webkit-details-marker,
+.accordion-item summary::marker {
+  display: none;
+  content: none;
+}
+
+.accordion-item summary::after {
+  content: "+";
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--sans);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--muted);
+  line-height: 1;
+}
+
+.accordion-item[open] summary::after {
+  content: "−";
+}
+
+.accordion-item summary:hover {
+  background: var(--paper-2);
+}
+
+.accordion-item[open] summary {
+  border-bottom: 1px solid var(--rule);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.accordion-item .accordion-body {
+  padding: 0.9rem 1.1rem 1.1rem;
+}
+
+.accordion-item .accordion-body p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.accordion-item .accordion-body p + p,
+.accordion-item .accordion-body .cat-band {
+  margin-top: 0.45rem;
+}
+
+.steps-accordion .step-num {
+  margin-bottom: 0;
+  min-width: 1.35rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+}
+
+.savings-teaser .btn {
+  margin-top: 0.15rem;
+}
+
+@media (min-width: 540px) {
+  .category-accordion {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 720px) {
+  .steps-accordion {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 980px) {
+  .category-accordion {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 539px) {
+  .accordion-grid,
+  .accordion-item,
+  .accordion-item summary {
+    width: 100%;
   }
 }
