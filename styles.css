@@ -1380,3 +1380,9 @@ button.btn {
 .book .hero-actions {
   margin-top: 0.4rem;
 }
+
+/* Supplier marks inside open vendor-savings categories */
+.vendor-marks { display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem 0.9rem; list-style: none; margin: 0 0 0.55rem; padding: 0; }
+.vendor-chip { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--ink); font-size: 0.92rem; line-height: 1.2; }
+.vendor-chip img { display: block; height: 32px; width: auto; max-width: 6.5rem; max-height: 36px; object-fit: contain; flex-shrink: 0; background: #fff; border-radius: 4px; }
+.vendor-pill { display: inline-flex; align-items: center; min-height: 1.85rem; padding: 0.12rem 0.65rem; border: 1px solid var(--rule-strong); border-radius: 999px; font-size: 0.82rem; font-weight: 650; color: var(--ink); background: var(--paper); }
