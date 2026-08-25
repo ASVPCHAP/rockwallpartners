@@ -147,10 +147,10 @@ a:hover {
 
 .header-inner {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto;
   grid-template-areas:
-    "brand place toggle"
-    "nav nav nav";
+    "brand toggle"
+    "nav nav";
   align-items: center;
   column-gap: 0.75rem;
   row-gap: 0.2rem;
@@ -160,17 +160,6 @@ a:hover {
 .wordmark { grid-area: brand; }
 .nav-toggle { grid-area: toggle; }
 .site-nav { grid-area: nav; }
-.header-place { grid-area: place; }
-
-.header-place {
-  margin: 0;
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  justify-self: end;
-  white-space: nowrap;
-}
 
 .site-nav {
   display: none;
@@ -283,6 +272,10 @@ section[id],
 #about,
 #who,
 #leaks,
+#bottlenecks,
+#savings,
+#keep,
+#scorecard,
 #top {
   scroll-margin-top: 4.75rem;
 }
@@ -408,6 +401,7 @@ button.btn {
 .trade-grid,
 .steps,
 .leak-list,
+.bottleneck-list,
 .faq-list {
   list-style: none;
   margin: 0;
@@ -439,17 +433,20 @@ button.btn {
 
 .trade-grid p,
 .leak-list p,
+.bottleneck-list p,
 .steps p {
   margin: 0;
   color: var(--muted);
 }
 
-.leak-list {
+.leak-list,
+.bottleneck-list {
   display: grid;
   gap: 0.9rem;
 }
 
-.leak-list li {
+.leak-list li,
+.bottleneck-list li {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1rem;
@@ -457,11 +454,13 @@ button.btn {
   border-top: 1px solid var(--rule);
 }
 
-.leak-list li:last-child {
+.leak-list li:last-child,
+.bottleneck-list li:last-child {
   border-bottom: 1px solid var(--rule);
 }
 
-.leak-num {
+.leak-num,
+.bottleneck-num {
   font-family: var(--serif);
   font-size: 1.7rem;
   color: var(--ink);
@@ -619,7 +618,8 @@ button.btn {
   margin-top: 0.45rem;
 }
 
-.book-form input {
+.book-form input,
+.book-form select {
   width: 100%;
   min-height: 2.75rem;
   border: 1px solid var(--rule-strong);
@@ -631,7 +631,8 @@ button.btn {
   padding: 0.55rem 0.75rem;
 }
 
-.book-form input:focus {
+.book-form input:focus,
+.book-form select:focus {
   outline: 2px solid var(--focus);
   outline-offset: 1px;
   border-color: var(--focus);
@@ -684,8 +685,8 @@ button.btn {
 
 @media (min-width: 720px) {
   .header-inner {
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: "brand nav place";
+    grid-template-columns: auto 1fr;
+    grid-template-areas: "brand nav";
     padding: 0.95rem 0;
   }
 
@@ -703,7 +704,7 @@ button.btn {
   .site-nav.is-open {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 1.4rem;
     padding: 0;
   }
@@ -745,7 +746,7 @@ button.btn {
   }
 
   .hero-copy h1 {
-    max-width: 18ch;
+    max-width: 24ch;
   }
 
   .section {
@@ -911,7 +912,10 @@ button.btn {
   .hero,
   .who,
   .leaks,
+  .bottlenecks,
   .how,
+  .savings,
+  .keep-page,
   .about,
   .faq,
   .book,
@@ -968,4 +972,160 @@ button.btn {
 .keep-matrix li,
 .keep-days li {
   margin: 0.25rem 0;
+}
+
+
+/* Vendor savings */
+
+.partnership-line {
+  margin: 0 0 1.4rem;
+  max-width: 42rem;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.footer-partnership {
+  margin: 0.15rem 0 0.45rem;
+  font-size: 1rem;
+  color: color-mix(in srgb, var(--paper) 88%, #9ab);
+}
+
+.proof-strip {
+  list-style: none;
+  margin: 0 0 0.7rem;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.proof-strip li {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 0.95rem 1.05rem;
+  color: var(--muted);
+}
+
+.proof-strip strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 550;
+  color: var(--ink);
+  margin-bottom: 0.2rem;
+}
+
+.fine-print,
+.legal-note {
+  margin: 0 0 1.6rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  max-width: 46rem;
+}
+
+.subhead {
+  margin: 2.1rem 0 0.75rem;
+  font-size: 1.35rem;
+}
+
+.savings-steps {
+  margin-top: 0.4rem;
+}
+
+.category-grid {
+  list-style: none;
+  margin: 0 0 0.4rem;
+  padding: 0;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.category-grid li {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.05rem 1rem;
+}
+
+.category-grid h3 {
+  margin-bottom: 0.35rem;
+  font-size: 1.15rem;
+}
+
+.cat-vendors,
+.cat-band {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.cat-band {
+  margin-top: 0.45rem;
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+}
+
+.after-list {
+  margin: 0 0 0.5rem;
+  padding-left: 1.2rem;
+  max-width: 42rem;
+}
+
+.after-list li {
+  margin: 0.45rem 0;
+  color: var(--muted);
+}
+
+.after-list strong {
+  color: var(--ink);
+}
+
+.footnotes {
+  margin: 1.6rem 0 1rem;
+  padding-left: 1.2rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  max-width: 46rem;
+}
+
+.footnotes li {
+  margin: 0.3rem 0;
+}
+
+.savings .btn {
+  margin-top: 0.4rem;
+}
+
+.savings .faq-list {
+  margin-top: 0.4rem;
+}
+
+@media (min-width: 540px) {
+  .proof-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 720px) {
+  .savings-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 980px) {
+  .proof-strip {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .savings-steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

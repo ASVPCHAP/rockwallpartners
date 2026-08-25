@@ -53,11 +53,20 @@
       var town = (document.getElementById("town").value || "").trim();
       var phoneVal = (document.getElementById("phone").value || "").trim();
       var when = (document.getElementById("best-time").value || "").trim();
+      var interestEl = document.getElementById("interest");
+      var interest = interestEl ? interestEl.value : "assessment";
+      var isSavings = interest === "savings";
+      var subject = isSavings
+        ? "Vendor savings analysis"
+        : "Free 20-minute assessment";
+      var ask = isSavings
+        ? "I would like a free vendor savings analysis (send invoices, see the comparison, opt in per vendor)."
+        : "I would like the free 20-minute process assessment.";
 
       var lines = [
         "Hi Anthony,",
         "",
-        "I would like the free 20-minute AI Opportunity Assessment.",
+        ask,
         "",
         "Name: " + name,
         "Business: " + shop,
@@ -71,7 +80,7 @@
       var href =
         "mailto:anthony@rockwallpartners.com" +
         "?subject=" +
-        encodeURIComponent("Free 20-minute assessment") +
+        encodeURIComponent(subject) +
         "&body=" +
         encodeURIComponent(lines.join("\n"));
 
