@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Anthony Chapman">
+  <meta name="theme-color" content="#10243E">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Rockwall Partners">
+  <meta property="og:image" content="https://rockwallpartners.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://rockwallpartners.com/og-image.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <title>Contact — Rockwall Partners</title>
+  <meta name="description" content="Book a free 20-minute process assessment or a free vendor savings analysis. Tell us the business. We write back and set it.">
+  <link rel="canonical" href="https://rockwallpartners.com/contact">
+
+  <meta property="og:url" content="https://rockwallpartners.com/contact">
+  <meta property="og:title" content="Contact — Rockwall Partners">
+  <meta property="og:description" content="Book a free 20-minute process assessment or a free vendor savings analysis.">
+  <meta name="twitter:title" content="Contact — Rockwall Partners">
+  <meta name="twitter:description" content="Book a free 20-minute process assessment or a free vendor savings analysis.">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="wordmark" href="index.html" aria-label="Rockwall Partners home">
+        <span class="wordmark-name">Rockwall</span><span class="wordmark-ai">Partners</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-bars" aria-hidden="true"></span>
+        <span class="visually-hidden">Menu</span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Primary">
+        <a href="how.html">How it works</a>
+        <a href="vendor-savings.html">Vendor savings</a>
+        <a href="scorecard.html">Scorecard</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section book" id="book" aria-labelledby="book-title">
+      <div class="wrap book-grid">
+        <div>
+          <p class="kicker" id="contact">Book / contact</p>
+          <h1 id="book-title">Twenty minutes, or send the invoices. That is the ask.</h1>
+          <p class="section-lead">Tell us the business and which conversation you want: the process assessment, or a vendor savings analysis. We will write back and set it.</p>
+          <p>
+            <a class="text-link" href="mailto:anthony@rockwallpartners.com?subject=Free%2020-minute%20assessment">Process assessment — anthony@rockwallpartners.com</a>
+          </p>
+          <p>
+            <a class="text-link" href="mailto:anthony@rockwallpartners.com?subject=Vendor%20savings%20analysis">Vendor savings — same inbox, different subject</a>
+          </p>
+
+          <!--
+            PHONE — the one place to fill.
+            Replace YOUR_PHONE in the data-phone attribute (digits, e.g. 4695550100).
+            Leave YOUR_PHONE and the call link stays hidden. Email still shows.
+          -->
+          <p class="phone-wrap">
+            <a
+              id="owner-phone"
+              class="phone-link"
+              href="tel:YOUR_PHONE"
+              data-phone="YOUR_PHONE"
+            >Call YOUR_PHONE</a>
+          </p>
+
+          <!--
+            OPTIONAL BOOKING_URL
+            Put a Calendly (or other) URL in data-booking-url on #open-calendar.
+            Example: data-booking-url="https://calendly.com/you/assessment"
+            The calendar button stays hidden until a real URL is set.
+          -->
+          <p>
+            <a
+              id="open-calendar"
+              class="btn btn-ghost booking-url-btn"
+              data-booking-url=""
+              hidden
+            >Pick a time on the calendar</a>
+          </p>
+        </div>
+
+        <form class="book-form" id="book-form" action="mailto:anthony@rockwallpartners.com" method="get">
+          <input type="hidden" name="subject" id="form-subject" value="Free 20-minute assessment">
+          <p class="form-intro">Or send the short form. It opens your email with the details filled in. Nothing is posted to a server.</p>
+
+          <label for="interest">I want</label>
+          <select id="interest" name="interest" required>
+            <option value="assessment" selected>The free 20-minute process assessment</option>
+            <option value="savings">A free vendor savings analysis</option>
+          </select>
+
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+
+          <label for="shop">Business name</label>
+          <input id="shop" name="shop" type="text" autocomplete="organization" required>
+
+          <label for="town">Town</label>
+          <input id="town" name="town" type="text" autocomplete="address-level2" required>
+
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+
+          <label for="best-time">Best time</label>
+          <input id="best-time" name="best-time" type="text" placeholder="Tue after 3, or Thursday morning">
+
+          <button class="btn btn-primary" type="submit">Email us</button>
+          <p class="form-note">Opens mailto:anthony@rockwallpartners.com. Subject is “Free 20-minute assessment” or “Vendor savings analysis,” depending on what you pick.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section faq" id="assessment" aria-labelledby="faq-title">
+      <div class="wrap narrow">
+        <p class="kicker">Questions owners ask</p>
+        <h2 id="faq-title">Straight answers.</h2>
+
+        <dl class="faq-list">
+          <div>
+            <dt>Do I have to use ChatGPT?</dt>
+            <dd>No. You keep running the business the way you do now. We set up the quiet stuff in the back. This is not ChatGPT training.</dd>
+          </div>
+          <div>
+            <dt>Is this software?</dt>
+            <dd>No. It is a 20-minute assessment. If you want the first fix installed, we do that work. You are not buying a software login.</dd>
+          </div>
+          <div>
+            <dt>What does it cost if I move forward?</dt>
+            <dd>If the first fix is worth it, we will price it on the assessment call after you review the scorecard together. The assessment is free. There is no public install price on this site.</dd>
+          </div>
+          <div>
+            <dt>Do I have to buy anything after the call?</dt>
+            <dd>No. You keep the page either way.</dd>
+          </div>
+          <div>
+            <dt>How do I book?</dt>
+            <dd>Email the form, or write <a href="mailto:anthony@rockwallpartners.com">anthony@rockwallpartners.com</a>. Tell us the business and a time that works. We write back and set the twenty minutes — or the vendor savings analysis, if that is the ask.</dd>
+          </div>
+          <div>
+            <dt>What about vendor savings?</dt>
+            <dd>A separate free analysis, no obligation. See the <a href="vendor-savings.html">Vendor savings</a> page, or use the same form and pick vendor savings.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <p class="footer-brand"><span class="wordmark-name">Rockwall</span><span class="wordmark-ai">Partners</span> · <a href="mailto:anthony@rockwallpartners.com">anthony@rockwallpartners.com</a></p>
+      <p class="privacy">We only use what you send to book the assessment or start a spend analysis.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,11 +1,24 @@
 (function () {
   "use strict";
 
-  // Old homepage #savings dump now lives on vendor-savings.html (/vendor-savings).
-  if (window.location.hash === "#savings") {
-    var path = window.location.pathname || "";
-    if (path.indexOf("vendor-savings") === -1) {
-      window.location.replace("vendor-savings.html");
+  // Old homepage hashes now live on their own tabs.
+  var path = window.location.pathname || "";
+  var hash = window.location.hash || "";
+  var file = path.split("/").pop() || "";
+  var onHome = file === "" || file === "index.html" || file === "index";
+  if (onHome) {
+    var homeHashMap = {
+      "#savings": "vendor-savings.html",
+      "#how": "how.html",
+      "#bottlenecks": "how.html#bottlenecks",
+      "#scorecard": "scorecard.html",
+      "#keep": "scorecard.html#keep",
+      "#contact": "contact.html",
+      "#book": "contact.html",
+      "#assessment": "contact.html"
+    };
+    if (homeHashMap[hash]) {
+      window.location.replace(homeHashMap[hash]);
       return;
     }
   }
