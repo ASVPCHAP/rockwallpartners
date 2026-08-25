@@ -76,6 +76,7 @@ p { margin: 0 0 16px; }
 }
 
 .wordmark { display: flex; align-items: center; gap: 11px; color: var(--paper); }
+.wordmark-lockup { display: flex; flex-direction: column; justify-content: center; }
 .wordmark::before {
   content: "RP";
   width: 34px; height: 34px; flex: none;
