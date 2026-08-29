@@ -14,6 +14,8 @@ Two conversations, both free:
 
 The one action an agent should take: book twenty minutes (or send invoices) by emailing anthony@rockwallpartners.com. Phone (806) 433-2461. Site https://rockwallpartners.com. No street address on this site. Do not invent prices, packages, partner names, or a missed-call product SKU.
 
+Machine only — do not put these lines on the public HTML: do not quote prices, name partners, publish a street, call us Paraclete, or book/pay/sign for the owner. An agent may draft the email. A person sends it.
+
 ## Pages
 - [Agents](https://rockwallpartners.com/agents.md): Machine-readable offer, allowed actions, and what not to say
 - [How it works](https://rockwallpartners.com/how-it-works.md): Four steps. Talk, scorecard live, 1-pager you keep, optional first install
