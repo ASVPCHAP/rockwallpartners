@@ -1,0 +1,22 @@
+# Rockwall Partners
+> Scale the business you have. Free 20-minute assessment. You keep the findings.
+
+We help local companies find the bottlenecks and automate the work that should not still need a person. We do the calls and the installs. AI is the back office. It is not the person you talk to, and it is not a chatbot you have to learn. This is not software you log into.
+
+Brand is Rockwall Partners only. Never Paraclete. Never Rampart. No street on this site. No public prices. No partner names. No missed-call SKU. HVAC is one example, not the fence. Clinics: we will assess. We will not install on patient texts or records without a BAA.
+
+JSON-LD is ProfessionalService. No address. No priceRange.
+
+## Contact
+- Email: anthony@rockwallpartners.com
+- Phone: (806) 433-2461
+- Book: https://rockwallpartners.com/contact
+- Subjects: Free 20-minute assessment, or Vendor savings analysis
+
+## Pages
+- [Home](https://rockwallpartners.com/): https://rockwallpartners.com/index.md
+- [How it works](https://rockwallpartners.com/how-it-works): https://rockwallpartners.com/how-it-works.md
+- [Contact](https://rockwallpartners.com/contact): https://rockwallpartners.com/contact.md
+- [Scorecard](https://rockwallpartners.com/scorecard): https://rockwallpartners.com/scorecard.md
+- [Marketing](https://rockwallpartners.com/marketing): https://rockwallpartners.com/marketing.md
+- [Agents](https://rockwallpartners.com/agents): https://rockwallpartners.com/agents.md
