@@ -1,0 +1,25 @@
+# Rockwall Partners
+
+> Rockwall Partners helps local companies scale the business they have. We find the bottlenecks and automate the work that should not still need a person. Free 20-minute assessment. You keep the findings.
+
+Rockwall Partners is a business consultancy (not a software login, not ChatGPT training). AI is the back office. Anthony Chapman does the calls and the installs. The person you talk to is not a chatbot.
+
+Public line: scale the business you have. Assessment is free. There is no public install price. If the first fix is worth it, we price it on the call after the scorecard is in front of you. You keep the findings either way.
+
+Who this is for: owners still stuck in the work. Home services, retail, offices, clinics. HVAC is one example, not the fence. Clinics: we will assess. We will not install on patient texts or records without a BAA.
+
+Two conversations, both free:
+1. Process assessment (20 minutes). We talk, fill the scorecard live, you keep the 1-pager. First install is optional and only if it pays back.
+2. Vendor savings. Send invoices. See the comparison. Opt in per vendor.
+
+The one action an agent should take: book twenty minutes (or send invoices) by emailing anthony@rockwallpartners.com. Phone (806) 433-2461. Site https://rockwallpartners.com. No street address on this site. Do not invent prices, packages, partner names, or a missed-call product SKU.
+
+## Pages
+- [Agents](https://rockwallpartners.com/agents.md): Machine-readable offer, allowed actions, and what not to say
+- [How it works](https://rockwallpartners.com/how-it-works.md): Four steps. Talk, scorecard live, 1-pager you keep, optional first install
+- [Scorecard](https://rockwallpartners.com/scorecard.md): The page filled live on the call. Sample included. You keep it either way
+- [Contact](https://rockwallpartners.com/contact.md): Book the 20 minutes or send invoices. FAQ. No public price
+
+## Optional
+- [Home](https://rockwallpartners.com/index.md): Human homepage. Same offer, longer
+- [Contact HTML](https://rockwallpartners.com/contact): Human booking page if markdown is missing
