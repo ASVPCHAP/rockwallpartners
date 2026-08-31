@@ -11,8 +11,6 @@
       "#savings": "vendor-savings.html",
       "#how": "how.html",
       "#bottlenecks": "how.html#bottlenecks",
-      "#scorecard": "scorecard.html",
-      "#keep": "scorecard.html#keep",
       "#contact": "contact.html",
       "#book": "contact.html",
       "#assessment": "contact.html"
@@ -107,13 +105,6 @@
         encodeURIComponent(lines.join("\n"));
 
       window.location.href = href;
-    });
-  }
-
-  var printBtn = document.getElementById("print-scorecard");
-  if (printBtn) {
-    printBtn.addEventListener("click", function () {
-      window.print();
     });
   }
 })();
