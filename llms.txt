@@ -17,6 +17,5 @@ JSON-LD is ProfessionalService. No address. No priceRange.
 - [Home](https://rockwallpartners.com/): https://rockwallpartners.com/index.md
 - [How it works](https://rockwallpartners.com/how-it-works): https://rockwallpartners.com/how-it-works.md
 - [Contact](https://rockwallpartners.com/contact): https://rockwallpartners.com/contact.md
-- [Scorecard](https://rockwallpartners.com/scorecard): https://rockwallpartners.com/scorecard.md
 - [Marketing](https://rockwallpartners.com/marketing): https://rockwallpartners.com/marketing.md
 - [Agents](https://rockwallpartners.com/agents): https://rockwallpartners.com/agents.md

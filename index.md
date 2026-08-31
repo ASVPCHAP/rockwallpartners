@@ -8,4 +8,3 @@ Owners still stuck in the work: home services, retail, offices, clinics. HVAC is
 
 - [How it works](https://rockwallpartners.com/how-it-works)
 - [Book 20 minutes](https://rockwallpartners.com/contact)
-- [Scorecard](https://rockwallpartners.com/scorecard)

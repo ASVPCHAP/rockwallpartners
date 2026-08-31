@@ -3,3 +3,7 @@
 /savings /vendor-savings 301
 /index.html / 301
 /seo /marketing 301
+/scorecard / 301
+/scorecard/ / 301
+/scorecard.html / 301
+/scorecard.md / 301
