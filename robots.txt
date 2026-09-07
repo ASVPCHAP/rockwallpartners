@@ -1,5 +1,7 @@
 User-agent: *
 Disallow: /teardown
 Disallow: /teardown.html
+Disallow: /agerite-prototype
+Disallow: /agerite-prototype.html
 Allow: /llms.txt
 Allow: /*.md

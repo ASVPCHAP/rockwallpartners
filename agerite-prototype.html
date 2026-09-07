@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Anthony Chapman">
+<meta name="robots" content="noindex, nofollow">
+<title>AGErite Field System — Phase 1 Prototype</title>
+<meta name="description" content="Internal prototype: AGErite provider site + field portal, mock data only.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Design tokens — APPROXIMATE. The real concept file
+   (agerite-concept-site.html) with exact "Clinical Editorial"
+   values wasn't available when this was built. Swap these for
+   the real tokens before this goes in front of Cindy.
+   ============================================================ */
+:root{
+  --teal:#2f6b66; --teal-dark:#1f4d49; --vermilion:#c1502e; --gold:#b8862f;
+  --paper:#faf6ee; --paper-2:#f2ecdf; --ink:#20221f; --ink-soft:#5a5d57;
+  --line:#ddd4c0;
+  --radius:2px;
+  --font-display:'Fraunces',serif; --font-body:'Inter',sans-serif; --font-mono:'IBM Plex Mono',monospace;
+}
+[data-surface="portal"]{
+  --bg:#14171a; --bg-2:#1c2024; --ink:#eef0ee; --ink-soft:#9aa39e; --line:#2c3136;
+  --teal:#4fb3aa; --vermilion:#e2765a; --gold:#e0b85a;
+}
+[data-surface="public"]{ --bg:var(--paper); }
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--font-body);
+  min-height:100vh; transition:background .25s ease, color .25s ease;
+}
+h1,h2,h3,.display{font-family:var(--font-display); font-weight:600; letter-spacing:-0.01em; margin:0 0 .3em;}
+.accent{font-style:italic; color:var(--teal);}
+.mono{font-family:var(--font-mono);}
+p{line-height:1.55; color:var(--ink-soft);}
+a{color:var(--teal);}
+button{font-family:var(--font-body); cursor:pointer;}
+.hairline{border:none; border-top:1px solid var(--line);}
+.wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+.pill{display:inline-flex; align-items:center; gap:.4em; font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; padding:.25em .7em; border-radius:20px; border:1px solid var(--line); font-family:var(--font-mono);}
+.pill.current{color:var(--teal); border-color:var(--teal);}
+.pill.review{color:var(--gold); border-color:var(--gold);}
+.pill.owned{color:var(--vermilion); border-color:var(--vermilion);}
+.pill.open{color:var(--ink-soft);}
+.pill.pass{color:var(--teal); border-color:var(--teal);}
+.pill.fail{color:var(--vermilion); border-color:var(--vermilion);}
+
+/* topbar + surface toggle */
+.topbar{position:sticky; top:0; z-index:20; background:var(--bg); border-bottom:1px solid var(--line); padding:14px 0;}
+.topbar .wrap{display:flex; align-items:center; justify-content:space-between;}
+.brand{font-family:var(--font-display); font-weight:600; font-size:1.3rem;}
+.brand .accent{font-style:italic;}
+.toggle-group{display:flex; border:1px solid var(--line); border-radius:20px; overflow:hidden;}
+.toggle-group button{background:none; border:none; padding:.5em 1.1em; font-size:.8rem; color:var(--ink-soft);}
+.toggle-group button.active{background:var(--teal); color:#fff;}
+
+.banner{background:var(--gold); color:#20221f; font-family:var(--font-mono); font-size:.75rem; text-align:center; padding:.5em; }
+
+main{padding:48px 0 100px;}
+.hero{padding:40px 0 20px;}
+.hero h1{font-size:2.4rem; max-width:14ch;}
+.hero p{max-width:52ch; font-size:1.05rem;}
+
+table{width:100%; border-collapse:collapse; font-size:.9rem;}
+th{text-align:left; font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); font-weight:500; padding:.6em .5em; border-bottom:1px solid var(--line);}
+td{padding:.7em .5em; border-bottom:1px solid var(--line); vertical-align:top;}
+tr.pending td{opacity:.6;}
+.num{font-family:var(--font-mono);}
+
+.card{border:1px solid var(--line); border-radius:var(--radius); padding:1.2em; background:var(--bg-2, transparent);}
+.grid{display:grid; gap:16px;}
+.grid.cols-4{grid-template-columns:repeat(4,1fr);}
+.grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.grid.cols-2{grid-template-columns:repeat(2,1fr);}
+@media (max-width:800px){.grid.cols-4,.grid.cols-3,.grid.cols-2{grid-template-columns:1fr;}}
+.stat-tile .num{font-size:1.8rem; display:block;}
+.stat-tile .label{font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft);}
+
+.portal-shell{display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 60px);}
+.portal-nav{border-right:1px solid var(--line); padding:24px 0;}
+.portal-nav button{display:block; width:100%; text-align:left; background:none; border:none; color:var(--ink-soft); padding:.6em 24px; font-size:.85rem;}
+.portal-nav button.active{color:var(--ink); border-left:2px solid var(--teal); background:rgba(79,179,170,.08);}
+.portal-main{padding:32px;}
+.section{display:none;}
+.section.active{display:block;}
+
+.login-box{max-width:380px; margin:80px auto; text-align:center;}
+select,input[type=text]{font-family:var(--font-body); padding:.6em; border:1px solid var(--line); border-radius:var(--radius); background:transparent; color:var(--ink); width:100%; margin:.4em 0;}
+.btn{display:inline-block; padding:.6em 1.3em; border-radius:20px; border:1px solid var(--teal); color:var(--teal); background:none; font-size:.85rem;}
+.btn.solid{background:var(--teal); color:#fff;}
+.btn.small{padding:.35em .9em; font-size:.75rem;}
+.msg{font-size:.85rem; margin-top:.6em; font-family:var(--font-mono);}
+.msg.blocked{color:var(--vermilion);}
+.msg.ok{color:var(--teal);}
+.note{font-size:.8rem; color:var(--ink-soft); font-style:italic;}
+.footer-note{margin-top:60px; font-size:.75rem; color:var(--ink-soft); text-align:center;}
+.quiz-q{margin:1em 0; padding:1em; border:1px solid var(--line); border-radius:var(--radius);}
+.quiz-q label{display:block; margin:.3em 0; font-size:.9rem;}
+.reset-link{position:fixed; bottom:10px; left:10px; font-size:.7rem; color:var(--ink-soft); font-family:var(--font-mono); z-index:30; background:var(--bg); padding:2px 6px;}
+</style>
+</head>
+<body data-surface="public">
+<div class="banner">PROTOTYPE — mock data only. Not connected to any real AGErite system, sheet, or patient record.</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">AGE<span class="accent">rite</span></div>
+    <div class="toggle-group" id="surfaceToggle">
+      <button data-surface-btn="public" class="active">Provider Site</button>
+      <button data-surface-btn="portal">Field Portal</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ PUBLIC SURFACE ============ -->
+  <section id="publicSurface" class="wrap">
+    <div class="hero">
+      <h1>The <span class="accent">source of truth</span> for every product you carry.</h1>
+      <p>One reference, one price, one concentration — for every prescriber, every rep, every state. If it isn't here, it isn't current.</p>
+    </div>
+    <hr class="hairline">
+
+    <h2 style="margin-top:2em;">Product reference</h2>
+    <p class="note">Public view — internal rep notes and under-review detail are not shown here.</p>
+    <div style="margin:1em 0;">
+      <label class="mono" style="font-size:.75rem;">Filter category:
+        <select id="publicCategoryFilter"><option value="">All</option></select>
+      </label>
+    </div>
+    <table id="publicProductTable"><thead><tr>
+      <th>Product</th><th>Category</th><th>Concentration</th><th>5mL</th><th>10mL</th><th>Protocol</th><th>Status</th>
+    </tr></thead><tbody></tbody></table>
+
+    <h2 style="margin-top:3em;">Ordering &amp; delivery</h2>
+    <p>Orders route through your assigned Integrative Concepts rep or the AGErite order form. Standard turnaround is 3–5 business days from a completed, signed order. Cold-chain items ship with validated packaging; all others ship standard.</p>
+
+    <h2 style="margin-top:2em;">Contact</h2>
+    <p>AGErite Pharmacy &amp; Wellness Center — Cypress, TX. For clinical questions, contact the pharmacist-in-charge through your rep.</p>
+
+    <p style="margin-top:2em;"><a href="#" id="repSignInLink">Rep sign-in →</a></p>
+    <div class="footer-note">AGErite Field System — Phase 1 Prototype · Built by Rockwall Partners</div>
+  </section>
+
+  <!-- ============ PORTAL LOGIN ============ -->
+  <section id="portalLogin" class="wrap" style="display:none;">
+    <div class="login-box">
+      <h2>Field portal sign-in</h2>
+      <p class="note">Prototype auth: pick a rep to simulate their session (mimics a magic-link email — no real link is sent).</p>
+      <select id="loginRepSelect"></select>
+      <button class="btn solid" id="loginBtn" style="margin-top:1em; width:100%;">Send magic link &amp; sign in</button>
+      <div class="msg ok" id="loginMsg" style="display:none;">Signed in.</div>
+    </div>
+  </section>
+
+  <!-- ============ PORTAL (AUTHENTICATED) ============ -->
+  <section id="portalApp" style="display:none;">
+    <div class="wrap" style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; font-size:.8rem; color:var(--ink-soft);">
+      <span>Signed in as <strong id="currentRepName" class="mono"></strong></span>
+      <button class="btn small" id="logoutBtn">Sign out</button>
+    </div>
+    <div class="portal-shell">
+      <nav class="portal-nav">
+        <button data-portal-tab="dashboard" class="active">Dashboard</button>
+        <button data-portal-tab="pipeline">Pipeline</button>
+        <button data-portal-tab="refills">Refills</button>
+        <button data-portal-tab="knowledge">Knowledge base</button>
+        <button data-portal-tab="territory">Territory &amp; contacts</button>
+        <button data-portal-tab="certification">Certification</button>
+        <button data-portal-tab="states">Licensed states</button>
+      </nav>
+      <div class="portal-main">
+
+        <div class="section active" id="tab-dashboard">
+          <h2>Dashboard</h2>
+          <div class="grid cols-4" id="dashboardStats"></div>
+          <h3 style="margin-top:2em;">What changed</h3>
+          <table id="changeLogTable"><thead><tr><th>Product</th><th>Field</th><th>Old → New</th><th>By</th><th>When</th></tr></thead><tbody></tbody></table>
+        </div>
+
+        <div class="section" id="tab-pipeline">
+          <h2>Pipeline</h2>
+          <p class="note">First rep to log a touch owns the clinic. Try logging against one already owned by another rep.</p>
+          <input type="text" id="pipelineSearch" placeholder="Search clinics…" style="max-width:300px;">
+          <table style="margin-top:1em;"><thead><tr><th>Clinic</th><th>City</th><th>Segment</th><th>Tier</th><th>Stage</th><th>Owner</th><th>Next step</th><th></th></tr></thead><tbody id="pipelineBody"></tbody></table>
+          <div id="pipelineMsg"></div>
+        </div>
+
+        <div class="section" id="tab-refills">
+          <h2>Refills</h2>
+          <div class="grid cols-4" id="refillStats" style="margin-bottom:1.5em;"></div>
+          <table><thead><tr><th>Patient ref</th><th>Clinic</th><th>Product</th><th>Started</th><th>Runs out</th><th>Status</th></tr></thead><tbody id="refillsBody"></tbody></table>
+        </div>
+
+        <div class="section" id="tab-knowledge">
+          <h2>Knowledge base (rep view)</h2>
+          <p class="note">Includes internal rep notes and genuinely-visible pending-review rows flagged "do not quote."</p>
+          <table><thead><tr><th>Product</th><th>Category</th><th>Concentration</th><th>5mL</th><th>10mL</th><th>Protocol</th><th>Status</th><th>Rep note</th></tr></thead><tbody id="repProductBody"></tbody></table>
+        </div>
+
+        <div class="section" id="tab-territory">
+          <h2>Territory &amp; contacts</h2>
+          <div style="display:flex; gap:1em; margin-bottom:1em; flex-wrap:wrap;">
+            <select id="clusterFilter"><option value="">All clusters</option></select>
+            <select id="tierFilter"><option value="">All tiers</option><option value="T1">T1</option><option value="T2">T2</option><option value="T3">T3</option></select>
+            <input type="text" id="territorySearch" placeholder="Search…">
+          </div>
+          <table><thead><tr><th>Name</th><th>City</th><th>Cluster</th><th>Tier</th><th>Segment</th><th>Ownership</th></tr></thead><tbody id="territoryBody"></tbody></table>
+        </div>
+
+        <div class="section" id="tab-certification">
+          <h2>Certification</h2>
+          <p>Module 1 — Peptide Handling &amp; Compliance Basics. Status: <span id="certStatusPill" class="pill"></span></p>
+          <div id="quizArea"></div>
+        </div>
+
+        <div class="section" id="tab-states">
+          <h2>Licensed states</h2>
+          <table><thead><tr><th>State</th><th>Status</th><th>Target quarter</th></tr></thead><tbody id="statesBody"></tbody></table>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<button class="reset-link" id="resetDemo">reset demo data</button>
+
+<script>
+/* ============================================================
+   Mock data layer — stands in for Postgres/Supabase per spec.
+   Schema shapes mirror PHASE1_SPEC.md section 3 exactly so a
+   real DB swap later is a data-source change, not a rebuild.
+   No patient name/DOB field exists anywhere in this schema.
+   ============================================================ */
+const TODAY = new Date('2026-09-07T00:00:00');
+const SEED = {
+  reps: [
+    {id:'r1', name:'Marcus Reyes', territory:'Rockwall–Fate', cert_status:'certified'},
+    {id:'r2', name:'Dana Okafor', territory:'North Houston', cert_status:'not_started'},
+    {id:'r3', name:'Priya Chandra', territory:'Cypress', cert_status:'in_progress'}
+  ],
+  products: [
+    {id:'p1', name:'BPC-157', category:'peptide', concentration:'5 mg/mL', price_5ml:125, price_10ml:225, protocol_duration:'4–8 weeks', rep_note:'Most-requested recovery peptide. Confirm current concentration before quoting.', status:'current', version:3, reviewed_by:'Cindy R., PIC', reviewed_at:'2026-08-12'},
+    {id:'p2', name:'TB-500', category:'peptide', concentration:'5 mg/mL', price_5ml:125, price_10ml:135, protocol_duration:'4–8 weeks', rep_note:'PIC is re-checking concentration vs. order form before this is confirmed. Do not quote pricing.', status:'pending_review', version:4, reviewed_by:null, reviewed_at:null},
+    {id:'p3', name:'CJC-1295', category:'peptide', concentration:'2 mg/mL', price_5ml:150, price_10ml:260, protocol_duration:'8–12 weeks', rep_note:'Often paired with Ipamorelin.', status:'current', version:2, reviewed_by:'Cindy R., PIC', reviewed_at:'2026-07-01'},
+    {id:'p4', name:'Ipamorelin', category:'peptide', concentration:'2 mg/mL', price_5ml:140, price_10ml:250, protocol_duration:'8–12 weeks', rep_note:null, status:'current', version:1, reviewed_by:'Cindy R., PIC', reviewed_at:'2026-06-15'},
+    {id:'p5', name:'Tesamorelin', category:'peptide', concentration:'3 mg/mL', price_5ml:175, price_10ml:null, protocol_duration:'12 weeks', rep_note:'August pricing is current. Do not use any June sheet.', status:'current', version:2, reviewed_by:'Cindy R., PIC', reviewed_at:'2026-08-01'},
+    {id:'p6', name:'Semaglutide', category:'weight-loss', concentration:'2.5 mg/mL', price_5ml:null, price_10ml:399, protocol_duration:'12–24 weeks', rep_note:'Do not lead with shortage/mail-order language.', status:'current', version:2, reviewed_by:'Cindy R., PIC', reviewed_at:'2026-08-20'},
+    {id:'p7', name:'BLT Numbing Cream', category:'topical', concentration:'Benzocaine/Lidocaine/Tetracaine', price_5ml:null, price_10ml:45, protocol_duration:'As needed', rep_note:null, status:'current', version:1, reviewed_by:'Cindy R., PIC', reviewed_at:'2026-05-10'}
+  ],
+  product_change_log: [
+    {id:'c1', product_id:'p2', field_changed:'concentration', old_value:'2.5 mg/mL', new_value:'5 mg/mL', changed_by:'Cindy R., PIC', changed_at:'2026-09-05'},
+    {id:'c2', product_id:'p5', field_changed:'concentration', old_value:'1 mg/mL', new_value:'3 mg/mL', changed_by:'Cindy R., PIC', changed_at:'2026-08-01'},
+    {id:'c3', product_id:'p1', field_changed:'price_10ml', old_value:'$210', new_value:'$225', changed_by:'Cindy R., PIC', changed_at:'2026-08-12'}
+  ],
+  clinics: [
+    {id:'cl1', name:'Vixen Wellness', city:'Rockwall', segment:'med spa', tier:'T1', cluster:'Rockwall–Fate', website:'vixenwellness.com', owner_rep_id:'r1', stage:'onboard', last_touch_at:'2026-08-28', next_step:'Confirm first order'},
+    {id:'cl2', name:'Sculpted MD', city:'Fate', segment:'med spa', tier:'T1', cluster:'Rockwall–Fate', website:'sculptedmd.com', owner_rep_id:null, stage:'identify', last_touch_at:null, next_step:'Initial drop-in'},
+    {id:'cl3', name:'Game Day Men\'s Health', city:'Houston', segment:'TRT', tier:'T1', cluster:'North Houston', website:'gamedaymenshealth.com', owner_rep_id:'r2', stage:'reorder', last_touch_at:'2026-09-01', next_step:'4-week reorder check-in'},
+    {id:'cl4', name:'Cypress Renewal Clinic', city:'Cypress', segment:'wellness', tier:'T2', cluster:'Cypress', website:'cypressrenewal.com', owner_rep_id:'r3', stage:'discovery', last_touch_at:'2026-09-02', next_step:'Send provider packet'},
+    {id:'cl5', name:'Heights Aesthetic Bar', city:'Houston', segment:'med spa', tier:'T2', cluster:'North Houston', website:'heightsaestheticbar.com', owner_rep_id:null, stage:'identify', last_touch_at:null, next_step:'Initial drop-in'}
+  ],
+  patients_refills: [
+    {id:'pr1', patient_ref:'P-0417', clinic_id:'cl1', product_id:'p1', started_at:'2026-08-01', protocol_weeks:6},
+    {id:'pr2', patient_ref:'P-0418', clinic_id:'cl1', product_id:'p3', started_at:'2026-06-20', protocol_weeks:10},
+    {id:'pr3', patient_ref:'P-0512', clinic_id:'cl3', product_id:'p6', started_at:'2026-06-01', protocol_weeks:12},
+    {id:'pr4', patient_ref:'P-0533', clinic_id:'cl4', product_id:'p4', started_at:'2026-08-20', protocol_weeks:10}
+  ],
+  licensed_states: [
+    {id:'s1', state_name:'Texas', status:'confirmed', target_quarter:null},
+    {id:'s2', state_name:'New York', status:'confirmed', target_quarter:null},
+    {id:'s3', state_name:'Colorado', status:'confirmed', target_quarter:null},
+    {id:'s4', state_name:'Wisconsin', status:'confirmed', target_quarter:null},
+    {id:'s5', state_name:'Missouri', status:'confirmed', target_quarter:null},
+    {id:'s6', state_name:'New Jersey', status:'confirmed', target_quarter:null},
+    {id:'s7', state_name:'Idaho', status:'confirmed', target_quarter:null},
+    {id:'s8', state_name:'Florida', status:'roadmap', target_quarter:'Q4 2026'},
+    {id:'s9', state_name:'Arizona', status:'roadmap', target_quarter:'Q1 2027'}
+  ],
+  certification_attempts: []
+};
+
+let DB = null;
+function loadDB(){
+  try{ const raw = localStorage.getItem('agerite_proto_db'); if(raw) return JSON.parse(raw); }catch(e){}
+  return JSON.parse(JSON.stringify(SEED));
+}
+function saveDB(){ try{ localStorage.setItem('agerite_proto_db', JSON.stringify(DB)); }catch(e){} }
+DB = loadDB();
+
+let currentRep = null;
+try{ const rid = localStorage.getItem('agerite_proto_rep'); if(rid) currentRep = DB.reps.find(r=>r.id===rid) || null; }catch(e){}
+
+function money(n){ return n==null ? '—' : '$'+n; }
+function byId(arr,id){ return arr.find(x=>x.id===id); }
+function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+function refillStatus(pr){
+  const start = new Date(pr.started_at+'T00:00:00');
+  const runsOut = new Date(start.getTime() + pr.protocol_weeks*7*86400000);
+  const d = daysBetween(TODAY, runsOut);
+  let status;
+  if(d < 0) status = 'lapsed';
+  else if(d <= 7) status = 'due';
+  else if(d <= 14) status = 'due_soon';
+  else status = 'on_protocol';
+  return {runsOut, daysLeft:d, status};
+}
+
+/* ---------- surface toggle ---------- */
+const surfaceBtns = document.querySelectorAll('[data-surface-btn]');
+surfaceBtns.forEach(b=>b.addEventListener('click', ()=>setSurface(b.dataset.surfaceBtn)));
+document.getElementById('repSignInLink').addEventListener('click', e=>{e.preventDefault(); setSurface('portal');});
+
+function setSurface(s){
+  document.body.setAttribute('data-surface', s);
+  surfaceBtns.forEach(b=>b.classList.toggle('active', b.dataset.surfaceBtn===s));
+  document.getElementById('publicSurface').style.display = s==='public' ? '' : 'none';
+  if(s==='portal'){
+    if(currentRep){ showPortalApp(); } else { showPortalLogin(); }
+  } else {
+    document.getElementById('portalLogin').style.display='none';
+    document.getElementById('portalApp').style.display='none';
+  }
+}
+function showPortalLogin(){
+  document.getElementById('portalLogin').style.display='';
+  document.getElementById('portalApp').style.display='none';
+}
+function showPortalApp(){
+  document.getElementById('portalLogin').style.display='none';
+  document.getElementById('portalApp').style.display='';
+  document.getElementById('currentRepName').textContent = currentRep.name + ' · ' + currentRep.territory;
+  renderAll();
+}
+
+/* ---------- login ---------- */
+const loginSelect = document.getElementById('loginRepSelect');
+DB.reps.forEach(r=>{ const o=document.createElement('option'); o.value=r.id; o.textContent=r.name+' ('+r.territory+')'; loginSelect.appendChild(o); });
+document.getElementById('loginBtn').addEventListener('click', ()=>{
+  currentRep = byId(DB.reps, loginSelect.value);
+  try{ localStorage.setItem('agerite_proto_rep', currentRep.id); }catch(e){}
+  document.getElementById('loginMsg').style.display='';
+  setTimeout(showPortalApp, 350);
+});
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  currentRep = null;
+  try{ localStorage.removeItem('agerite_proto_rep'); }catch(e){}
+  showPortalLogin();
+});
+
+/* ---------- portal tab nav ---------- */
+document.querySelectorAll('[data-portal-tab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('[data-portal-tab]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.portal-main .section').forEach(s=>s.classList.remove('active'));
+    document.getElementById('tab-'+btn.dataset.portalTab).classList.add('active');
+  });
+});
+
+/* ---------- public product table ---------- */
+function renderPublicProducts(){
+  const cats = [...new Set(DB.products.map(p=>p.category))];
+  const filterSel = document.getElementById('publicCategoryFilter');
+  if(filterSel.options.length===1){ cats.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; filterSel.appendChild(o); }); }
+  const filter = filterSel.value;
+  const tbody = document.querySelector('#publicProductTable tbody');
+  tbody.innerHTML='';
+  DB.products.filter(p=>!filter||p.category===filter).forEach(p=>{
+    const tr = document.createElement('tr');
+    if(p.status==='pending_review') tr.classList.add('pending');
+    const pending = p.status==='pending_review';
+    tr.innerHTML = `<td>${p.name}</td><td>${p.category}</td>
+      <td class="num">${pending?'under review':p.concentration}</td>
+      <td class="num">${pending?'—':money(p.price_5ml)}</td>
+      <td class="num">${pending?'—':money(p.price_10ml)}</td>
+      <td>${p.protocol_duration}</td>
+      <td><span class="pill ${pending?'review':'current'}">${pending?'Under review':'Current'}</span></td>`;
+    tbody.appendChild(tr);
+  });
+}
+document.getElementById('publicCategoryFilter').addEventListener('change', renderPublicProducts);
+
+/* ---------- portal: dashboard ---------- */
+function renderDashboard(){
+  const stats = document.getElementById('dashboardStats');
+  const pipelineCounts = {};
+  DB.clinics.forEach(c=>{ pipelineCounts[c.stage] = (pipelineCounts[c.stage]||0)+1; });
+  const refillCounts = {due:0,due_soon:0,lapsed:0,on_protocol:0};
+  DB.patients_refills.forEach(pr=>{ refillCounts[refillStatus(pr).status]++; });
+  stats.innerHTML = `
+    <div class="card stat-tile"><span class="num">${DB.clinics.length}</span><span class="label">Clinics in pipeline</span></div>
+    <div class="card stat-tile"><span class="num">${DB.clinics.filter(c=>c.owner_rep_id===currentRep.id).length}</span><span class="label">Owned by you</span></div>
+    <div class="card stat-tile"><span class="num">${refillCounts.due+refillCounts.due_soon}</span><span class="label">Refills due soon</span></div>
+    <div class="card stat-tile"><span class="num">${refillCounts.lapsed}</span><span class="label">Lapsed refills</span></div>`;
+  const log = document.querySelector('#changeLogTable tbody');
+  log.innerHTML='';
+  DB.product_change_log.slice().reverse().forEach(c=>{
+    const prod = byId(DB.products, c.product_id);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${prod?prod.name:c.product_id}</td><td>${c.field_changed}</td><td class="num">${c.old_value} → ${c.new_value}</td><td>${c.changed_by}</td><td class="num">${c.changed_at}</td>`;
+    log.appendChild(tr);
+  });
+}
+
+/* ---------- portal: pipeline (ownership locking) ---------- */
+function renderPipeline(){
+  const q = (document.getElementById('pipelineSearch').value||'').toLowerCase();
+  const tbody = document.getElementById('pipelineBody');
+  tbody.innerHTML='';
+  DB.clinics.filter(c=>c.name.toLowerCase().includes(q)).forEach(c=>{
+    const owner = c.owner_rep_id ? byId(DB.reps, c.owner_rep_id) : null;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${c.name}</td><td>${c.city}</td><td>${c.segment}</td><td>${c.tier}</td><td class="mono">${c.stage}</td>
+      <td>${owner ? `<span class="pill owned">${owner.name}</span>` : `<span class="pill open">Open</span>`}</td>
+      <td>${c.next_step||'—'}</td>
+      <td><button class="btn small" data-log-clinic="${c.id}">Log contact</button></td>`;
+    tbody.appendChild(tr);
+  });
+}
+document.getElementById('pipelineSearch').addEventListener('input', renderPipeline);
+document.getElementById('pipelineBody').addEventListener('click', e=>{
+  const btn = e.target.closest('[data-log-clinic]');
+  if(!btn) return;
+  const clinic = byId(DB.clinics, btn.dataset.logClinic);
+  const msgBox = document.getElementById('pipelineMsg');
+  if(clinic.owner_rep_id && clinic.owner_rep_id !== currentRep.id){
+    const owner = byId(DB.reps, clinic.owner_rep_id);
+    msgBox.innerHTML = `<p class="msg blocked">Blocked — ${clinic.name} is owned by ${owner.name} since ${clinic.last_touch_at}. You can't log a new interaction here. Ask an admin to reassign if this is wrong.</p>`;
+    return;
+  }
+  if(!clinic.owner_rep_id){
+    clinic.owner_rep_id = currentRep.id;
+    clinic.stage = clinic.stage==='identify' ? 'drop_in' : clinic.stage;
+    clinic.last_touch_at = TODAY.toISOString().slice(0,10);
+    saveDB();
+    msgBox.innerHTML = `<p class="msg ok">${clinic.name} is now owned by you (${currentRep.name}), effective today.</p>`;
+    renderPipeline(); renderDashboard();
+    return;
+  }
+  clinic.last_touch_at = TODAY.toISOString().slice(0,10);
+  saveDB();
+  msgBox.innerHTML = `<p class="msg ok">Contact logged for ${clinic.name}.</p>`;
+  renderPipeline();
+});
+
+/* ---------- portal: refills ---------- */
+function renderRefills(){
+  const tbody = document.getElementById('refillsBody');
+  tbody.innerHTML='';
+  const counts = {due:0,due_soon:0,lapsed:0,on_protocol:0};
+  DB.patients_refills.forEach(pr=>{
+    const {runsOut, status} = refillStatus(pr);
+    counts[status]++;
+    const clinic = byId(DB.clinics, pr.clinic_id);
+    const prod = byId(DB.products, pr.product_id);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="mono">${pr.patient_ref}</td><td>${clinic?clinic.name:'—'}</td><td>${prod?prod.name:'—'}</td>
+      <td class="num">${pr.started_at}</td><td class="num">${runsOut.toISOString().slice(0,10)}</td>
+      <td><span class="pill ${status==='lapsed'?'fail':status==='on_protocol'?'current':'review'}">${status.replace('_',' ')}</span></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('refillStats').innerHTML = `
+    <div class="card stat-tile"><span class="num">${counts.due}</span><span class="label">Due (≤7d)</span></div>
+    <div class="card stat-tile"><span class="num">${counts.due_soon}</span><span class="label">Due soon (8–14d)</span></div>
+    <div class="card stat-tile"><span class="num">${counts.lapsed}</span><span class="label">Lapsed</span></div>
+    <div class="card stat-tile"><span class="num">${counts.on_protocol}</span><span class="label">On protocol</span></div>`;
+}
+
+/* ---------- portal: knowledge base (rep view) ---------- */
+function renderRepProducts(){
+  const tbody = document.getElementById('repProductBody');
+  tbody.innerHTML='';
+  DB.products.forEach(p=>{
+    const pending = p.status==='pending_review';
+    const tr = document.createElement('tr');
+    if(pending) tr.classList.add('pending');
+    tr.innerHTML = `<td>${p.name}</td><td>${p.category}</td><td class="num">${p.concentration}</td>
+      <td class="num">${money(p.price_5ml)}</td><td class="num">${money(p.price_10ml)}</td><td>${p.protocol_duration}</td>
+      <td><span class="pill ${pending?'review':'current'}">${pending?'Pending review — do not quote':'Current'}</span></td>
+      <td>${p.rep_note||'—'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ---------- portal: territory & contacts ---------- */
+function renderTerritory(){
+  const clusterSel = document.getElementById('clusterFilter');
+  if(clusterSel.options.length===1){
+    [...new Set(DB.clinics.map(c=>c.cluster))].forEach(cl=>{ const o=document.createElement('option'); o.value=cl; o.textContent=cl; clusterSel.appendChild(o); });
+  }
+  const cluster = clusterSel.value, tier = document.getElementById('tierFilter').value;
+  const q = (document.getElementById('territorySearch').value||'').toLowerCase();
+  const tbody = document.getElementById('territoryBody');
+  tbody.innerHTML='';
+  DB.clinics.filter(c => (!cluster||c.cluster===cluster) && (!tier||c.tier===tier) && c.name.toLowerCase().includes(q)).forEach(c=>{
+    const owner = c.owner_rep_id ? byId(DB.reps, c.owner_rep_id) : null;
+    const ownership = !c.owner_rep_id ? `<span class="pill open">Open</span>`
+      : c.owner_rep_id===currentRep.id ? `<span class="pill current">Yours</span>`
+      : `<span class="pill owned">${owner.name}</span>`;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${c.name}</td><td>${c.city}</td><td>${c.cluster}</td><td>${c.tier}</td><td>${c.segment}</td><td>${ownership}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+['clusterFilter','tierFilter','territorySearch'].forEach(id=>document.getElementById(id).addEventListener('input', renderTerritory));
+
+/* ---------- portal: certification ---------- */
+const QUIZ = [
+  {q:'A brochure and an order form disagree on concentration. What do you do?', options:['Use whichever number is higher, to be safe','Quote nothing until the source of truth confirms it','Ask the clinic which one they prefer'], correct:1},
+  {q:'A product shows "pending review" in the knowledge base. Can you quote its price to a clinic?', options:['Yes, the old price still applies','No — do not quote until it clears review','Only if the clinic asks twice'], correct:1},
+  {q:'You want to work a clinic that shows another rep as owner. What do you do?', options:['Log a contact anyway, first to touch wins twice','Leave it — ownership is locked to the first rep unless admin reassigns','Ask the clinic to switch reps'], correct:1}
+];
+function renderCertification(){
+  const pillEl = document.getElementById('certStatusPill');
+  pillEl.textContent = currentRep.cert_status.replace('_',' ');
+  pillEl.className = 'pill ' + (currentRep.cert_status==='certified' ? 'pass' : 'review');
+  const area = document.getElementById('quizArea');
+  if(currentRep.cert_status==='certified'){
+    area.innerHTML = `<p class="msg ok">Certified — module complete.</p>`;
+    return;
+  }
+  area.innerHTML = QUIZ.map((item,i)=>`
+    <div class="quiz-q">
+      <p><strong>${i+1}. ${item.q}</strong></p>
+      ${item.options.map((opt,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`).join('')}
+    </div>`).join('') + `<button class="btn solid" id="submitQuiz">Submit</button><div id="quizResult"></div>`;
+  document.getElementById('submitQuiz').addEventListener('click', ()=>{
+    let correct=0;
+    QUIZ.forEach((item,i)=>{ const sel = document.querySelector(`input[name="q${i}"]:checked`); if(sel && parseInt(sel.value)===item.correct) correct++; });
+    const passed = correct===QUIZ.length;
+    currentRep.cert_status = passed ? 'certified' : 'in_progress';
+    DB.certification_attempts.push({id:'a'+Date.now(), rep_id:currentRep.id, module_id:'m1', score:correct, passed, completed_at:TODAY.toISOString().slice(0,10)});
+    saveDB();
+    document.getElementById('quizResult').innerHTML = `<p class="msg ${passed?'ok':'blocked'}">${correct}/${QUIZ.length} correct — ${passed?'passed, certification updated.':'not passed yet, try again.'}</p>`;
+    renderCertification();
+  });
+}
+
+/* ---------- portal: licensed states ---------- */
+function renderStates(){
+  const tbody = document.getElementById('statesBody');
+  tbody.innerHTML='';
+  DB.licensed_states.forEach(s=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${s.state_name}</td><td><span class="pill ${s.status==='confirmed'?'current':'review'}">${s.status}</span></td><td class="num">${s.target_quarter||'—'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderAll(){
+  renderDashboard(); renderPipeline(); renderRefills(); renderRepProducts();
+  renderTerritory(); renderCertification(); renderStates();
+}
+
+document.getElementById('resetDemo').addEventListener('click', ()=>{
+  if(!confirm('Reset all demo data (ownership locks, cert progress) back to seed state?')) return;
+  localStorage.removeItem('agerite_proto_db'); localStorage.removeItem('agerite_proto_rep');
+  location.reload();
+});
+
+renderPublicProducts();
+if(currentRep){ setSurface('portal'); } else { setSurface('public'); }
+</script>
+</body>
+</html>
