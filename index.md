@@ -7,4 +7,4 @@ Free 20-minute assessment. You keep the findings even if we never work together.
 Owners still stuck in the work: home services, retail, offices, clinics. HVAC is one example, not the fence.
 
 - [How it works](https://rockwallpartners.com/how-it-works)
-- [Book 20 minutes](https://rockwallpartners.com/contact)
+- [Request an assessment](https://rockwallpartners.com/contact)
