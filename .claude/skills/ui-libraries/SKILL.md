@@ -115,7 +115,9 @@ paste a raw hex or a Tailwind class into this repo.**
 
 Procedure:
 
-1. **Fetch the component** and read its actual markup and styles.
+1. **Fetch the component** and read its actual markup and styles. Several of these sites
+   (React Bits, 8bitcn) render client-side and return almost nothing to a plain fetch —
+   read their GitHub repo or `raw.githubusercontent.com` README instead.
 2. **Strip the React.** Props become static content; `className` chains become one semantic
    class; state becomes either a CSS `:hover`/`:focus-within` rule or a small vanilla handler
    appended to `script.js` in that file's existing IIFE style.
