@@ -15,3 +15,9 @@ Static HTML. Cloudflare Pages: empty build command, output `/`.
 - Phone is live: (806) 433-2461 (set via `data-phone` on `#owner-phone`).
 - Calendar button stays hidden until a URL is set in `data-booking-url` on `#open-calendar`.
 - Nav's last link renders as the primary CTA button automatically.
+
+## Building with component libraries
+`.claude/skills/ui-libraries/` catalogs the component sources we pull from (Spectrum UI,
+21st.dev, shadcnblocks, React Bits, 8bitcn, Evil Charts, Coss UI, Rare UI, beUI) and how to
+port them into this site's vanilla HTML/CSS. Those libraries are React + Tailwind; this site
+is not, so components get rebuilt against the `styles.css` tokens rather than installed.

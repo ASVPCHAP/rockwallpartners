@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:ui.spectrumhq.in)",
+      "WebFetch(domain:21st.dev)",
+      "WebFetch(domain:shadcnblocks.com)",
+      "WebFetch(domain:reactbits.dev)",
+      "WebFetch(domain:8bitcn.com)",
+      "WebFetch(domain:evilcharts.com)",
+      "WebFetch(domain:coss.com)",
+      "WebFetch(domain:rareui.com)",
+      "WebFetch(domain:beui.dev)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  }
+}
